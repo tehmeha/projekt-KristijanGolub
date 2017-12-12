@@ -48,52 +48,95 @@ int main ()
                             {0,0,0,0,0,0,0,0,0,0},
                             {0,0,0,0,0,0,0,0,0,0},
                             {0,0,0,0,0,0,0,0,0,0}};
-cout << "    ";
-for (int i = 0; i < 10; i++)
-{
-    cout << i << " ";
-}
-cout << endl;
-cout << "    ";
-for (int i = 0; i < 10; i++)
-{
-    cout << "--";
-}
-cout << endl;
-for (int i = 0; i < 10; i++)
-{
-    cout << i << "|  ";
-    for (int j = 0; j < 10; j++)
-    {
-        cout << polje2D_prviIgrac[i][j]<< " ";
-    }
-    cout << endl;
-}
-
 int redak, stupac;
-int br_pogodjenih = 0;
+int prvi_igrac_pogodio = 0, drugi_igrac_pogodio = 0;
 int na_redu = 1;
 int napada = 2;
 while(1)
 {
     cout << endl;
     cout << "Igrac " << na_redu << " napada igraca " << napada << endl;
+
+    cout << "    ";
+    for (int i = 0; i < 10; i++)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
+    cout << "    ";
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "--";
+    }
+    cout << endl;
+    for (int i = 0; i < 10; i++)
+    {
+        cout << i << "|  ";
+        for (int j = 0; j < 10; j++)
+        {
+            if (na_redu == 1)
+            {
+                if( polje2D_prviIgrac_pogadja[i][j] == 1 )
+                    cout << "+" << " ";
+                else if( polje2D_prviIgrac_pogadja[i][j] == -1 )
+                    cout << "-" << " ";
+                else
+                    cout << "0" << " ";
+            }
+            if (na_redu == 2)
+            {
+                if( polje2D_drugiIgrac_pogadja[i][j] == 1 )
+                    cout << "+" << " ";
+                else if( polje2D_drugiIgrac_pogadja[i][j] == -1 )
+                    cout << "-" << " ";
+                else
+                    cout << "0" << " ";
+            }
+        }
+        cout << endl;
+    }
+
     cout << "Unesite redak: " << endl;
     cin >> redak;
     cout << "Unesite stupac: " << endl;
     cin >> stupac;
-    if (polje2D[redak][stupac]==napada)
+    if (na_redu == 1)
     {
-      cout << "Pogodili ste neprijateljski brod: " << endl;
-      br_pogodjenih++;
+        if(polje2D_drugiIgrac[redak][stupac] == 1)
+        {
+            cout << "Pogodili ste neprijateljski brod: " << endl;
+            polje2D_prviIgrac_pogadja[redak][stupac] = 1;
+            prvi_igrac_pogodio++;
+        }
+        else
+        {
+          cout << "Niste pogodili brod neprijatelja: " << endl;
+          polje2D_prviIgrac_pogadja[redak][stupac] = -1;
+        }
     }
-    else
+    else if (na_redu == 2)
     {
-      cout << "Niste pogodili brod neprijatelja: " << endl;
+        if(polje2D_prviIgrac[redak][stupac] == 1)
+        {
+            cout << "Pogodili ste neprijateljski brod: " << endl;
+            polje2D_drugiIgrac_pogadja[redak][stupac] = 1;
+            drugi_igrac_pogodio++;
+        }
+        else
+        {
+          cout << "Niste pogodili brod neprijatelja: " << endl;
+          polje2D_drugiIgrac_pogadja[redak][stupac] = -1;
+        }
     }
-    if( br_pogodjenih == 16 )
+
+    if( prvi_igrac_pogodio == 16 )
     {
-        cout << "igrac je pobjedio:" << endl;
+        cout << "Pobjedio je prvi igrac 1." << endl;
+        break;
+    }
+    if( drugi_igrac_pogodio == 16 )
+    {
+        cout << "Pobjedio je drugi igrac 2." << endl;
         break;
     }
     swap( na_redu, napada);
